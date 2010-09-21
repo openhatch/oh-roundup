@@ -21,6 +21,10 @@ import sets
 
 from roundup import roundupdb, hyperdb
 
+# People to add by default to the nosy list.
+# This is expressed as a list of usernames e.g. ['bob', 'larry']
+_default_nosy = ['paulproteus']
+
 def nosyreaction(db, cl, nodeid, oldvalues):
     ''' A standard detector is provided that watches for additions to the
         "messages" property.
@@ -62,6 +66,19 @@ def determineNewMessages(cl, nodeid, oldvalues):
             if not m.has_key(msgid):
                 messages.append(msgid)
     return messages
+
+def defaultnosy(db, cl, nodeid, newvalues):
+    '''Default the nosy list
+    '''
+    # map the default nosy names to their ids
+    default_nosy_id = [db.user.lookup(name) for name in _default_nosy]
+
+    # make sure the default users are in the nosy list
+    nosy = newvalues.get('nosy', [])
+    for userid in default_nosy_id:
+        if userid not in nosy:
+            nosy.append(userid)
+    newvalues['nosy'] = nosy
 
 def updatenosy(db, cl, nodeid, newvalues):
     '''Update the nosy list for changes to the assignedto
@@ -137,6 +154,7 @@ def updatenosy(db, cl, nodeid, newvalues):
 def init(db):
     db.issue.react('create', nosyreaction)
     db.issue.react('set', nosyreaction)
+    db.issue.audit('create', defaultnosy)
     db.issue.audit('create', updatenosy)
     db.issue.audit('set', updatenosy)
 
