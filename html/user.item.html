@@ -59,11 +59,21 @@ define="edit_ok context/is_edit_ok"
   ">
  <tr tal:define="name string:realname; label string:Name; value context/realname; edit_ok edit_ok">
   <th metal:use-macro="th_label">Name</th>
-  <td><input name="realname" metal:use-macro="src_input"></td>
+  <td>
+    <span tal:condition="python: not edit_ok" tal:replace="value" />
+    <tal:if condition="edit_ok">
+      <input name="realname" metal:use-macro="src_input">
+    </tal:if>
+  </td>
  </tr>
  <tr tal:define="name string:username; label string:Login Name; value context/username">
    <th metal:use-macro="th_label">Login Name</th>
-   <td><input metal:use-macro="src_input"></td>
+   <td>
+     <span tal:condition="python: not edit_ok" tal:replace="value" />
+     <tal:if condition="edit_ok">
+       <input metal:use-macro="src_input">
+     </tal:if>
+   </td>
  </tr>
  <tal:if condition="edit_ok">
  <tr tal:define="name string:password; label string:Login Password">
@@ -91,6 +101,7 @@ define="edit_ok context/is_edit_ok"
  </tr>
  </tal:if>
 
+ <tal:if condition="edit_ok">
  <tr tal:define="name string:phone; label string:Phone; value context/phone">
   <th metal:use-macro="th_label">Phone</th>
   <td><input name="phone" metal:use-macro="normal_input"></td>
@@ -100,18 +111,24 @@ define="edit_ok context/is_edit_ok"
   <th metal:use-macro="th_label">Organisation</th>
   <td><input name="organisation" metal:use-macro="normal_input"></td>
  </tr>
+ </tal:if>
 
  <tr tal:condition="python:edit_ok or context.timezone"
      tal:define="name string:timezone; label string:Timezone; value context/timezone">
   <th metal:use-macro="th_label">Timezone</th>
-  <td><input name="timezone" metal:use-macro="normal_input">
+  <td>
+   <span tal:condition="python: not edit_ok" tal:replace="value" />
+   <tal:if condition="edit_ok">
+   <input name="timezone" metal:use-macro="normal_input">
    <tal:block tal:condition="edit_ok" i18n:translate="">(this is a numeric hour offset, the default is
     <span tal:replace="db/config/DEFAULT_TIMEZONE" i18n:name="zone"
     />)</tal:block>
+   </tal:if>
   </td>
  </tr>
 
- <tr tal:define="name string:address; label string:E-mail address; value context/address">
+ <tr tal:condition="edit_ok"
+     tal:define="name string:address; label string:E-mail address; value context/address">
   <th metal:use-macro="th_label">E-mail address</th>
   <td tal:define="mailto python:context.address.field(id='address');
 	  mklink python:mailto and not edit_ok">
@@ -126,7 +143,7 @@ define="edit_ok context/is_edit_ok"
   </td>
  </tr>
 
- <tr>
+ <tr tal:condition="edit_ok">
   <th><label for="alternate_addresses" i18n:translate="">Alternate E-mail addresses<br>One address per line</label></th>
   <td>
     <textarea rows=5 cols=40 tal:replace="structure context/alternate_addresses/multiline">nobody@nowhere.org
