@@ -46,6 +46,11 @@
 </tr>
 
 <tr>
+ <th i18n:translate="">Milestone</th>
+ <td tal:content="structure python:context.milestone.menu(sort_on='-name')">assignedto menu</td>
+</tr>
+
+<tr>
  <th class="required" i18n:translate="">Priority</th>
  <td tal:content="structure context/priority/menu">priority</td>
  <th i18n:translate="">Status</th>

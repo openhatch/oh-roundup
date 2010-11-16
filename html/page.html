@@ -19,8 +19,11 @@
 kw_edit python:request.user.hasPermission('Edit', 'keyword');
 kw_create python:request.user.hasPermission('Create', 'keyword');
 kw_edit_link python:kw_edit and db.keyword.list();
-columns string:id,activity,title,creator,status;
-columns_showall string:id,activity,title,creator,assignedto,status;
+ms_edit python:request.user.hasPermission('Edit', 'milestone');
+ms_create python:request.user.hasPermission('Create', 'milestone');
+ms_edit_link python:ms_edit and db.milestone.list();
+columns string:id,activity,title,creator,status,milestone;
+columns_showall string:id,activity,title,creator,assignedto,status,milestone;
 status_notresolved string:-1,1,2,3,4,5,6,7,9,10;
 "
 >
@@ -35,7 +38,7 @@ status_notresolved string:-1,1,2,3,4,5,6,7,9,10;
      <form method="GET" action="issue">
        <input type="hidden" name="@columns"
 	      tal:attributes="value columns_showall"
-	      value="id,activity,title,creator,assignedto,status"/>
+	      value="id,activity,title,creator,assignedto,status,milestone"/>
        <input type="hidden" name="@sort" value="activity"/>
        <input type="hidden" name="@group" value="priority"/>
        <input id="search-text" name="@search_text" size="10"
@@ -97,6 +100,17 @@ status_notresolved string:-1,1,2,3,4,5,6,7,9,10;
     <input type="hidden" name="@action" value="show">
    </p>
   </form>
+
+  <p class="classblock"
+     tal:condition="python:ms_edit or ms_create">
+   <b i18n:translate="">Milestones</b><br>
+   <span tal:condition="python:request.user.hasPermission('Create', 'milestone')">
+    <a href="milestone?@template=item" i18n:translate="">Create New</a><br>
+   </span>
+   <span tal:condition="ms_edit_link">
+    <a href="milestone?@template=item" i18n:translate="">Edit Existing</a><br>
+   </span>
+  </p>
 
   <p class="classblock"
      tal:condition="python:kw_edit or kw_create">

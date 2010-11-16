@@ -34,6 +34,7 @@
    <th tal:condition="request/show/status" i18n:translate="">Status</th>
    <th tal:condition="request/show/creator" i18n:translate="">Creator</th>
    <th tal:condition="request/show/assignedto" i18n:translate="">Assigned&nbsp;To</th>
+   <th tal:condition="request/show/milestone" i18n:translate="">Milestone</th>
   </tr>
  <tal:block tal:repeat="i batch" condition=true>
   <tr tal:define="group python:[r[1] for r in request.group]"
@@ -68,6 +69,8 @@
        tal:content="python:i.creator.plain() or default">&nbsp;</td>
    <td tal:condition="request/show/assignedto"
        tal:content="python:i.assignedto.plain() or default">&nbsp;</td>
+   <td tal:condition="request/show/milestone"
+       tal:content="python:i.milestone.plain() or default">&nbsp;</td>
   </tr>
 
  </tal:block>

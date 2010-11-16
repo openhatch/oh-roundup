@@ -26,6 +26,11 @@ keyword = Class(db, "keyword",
                 name=String())
 keyword.setkey("name")
 
+# Milestones
+milestone = Class(db, "milestone",
+                   name=String())
+milestone.setkey("name")
+
 # User-defined saved searches
 query = Class(db, "query",
                 klass=String(),
@@ -73,7 +78,8 @@ issue = IssueClass(db, "issue",
                 assignedto=Link("user"),
                 keyword=Multilink("keyword"),
                 priority=Link("priority"),
-                status=Link("status"))
+                status=Link("status"),
+                milestone=Link("milestone"))
 
 #
 # TRACKER SECURITY SETTINGS
