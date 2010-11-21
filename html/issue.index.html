@@ -22,6 +22,42 @@
  Please login with your username and password.</p>
 
 <tal:block tal:define="batch request/batch" tal:condition="context/is_view_ok">
+ <tal:block tal:condition="request/form/milestone | nothing">
+ <style>
+  td.green-prog{background-color:#AAFFAA;}
+  td.red-prog{background-color:#FFAAD4;}
+ </style>
+ <table tal:define="
+this_milestone python:[mfs.value for mfs in request.form.value if mfs.name=='milestone'][0];
+total_milestone_issues python:len(db.issue.filter(filterspec={'milestone.name': this_milestone}));
+resolved_milestone_issues python:len(db.issue.filter(filterspec={'milestone.name': this_milestone, 'status': '8'}));
+" tal:attributes="
+class string:milestone-progress-bar;
+width string:90%;
+align string:center;
+cellspacing string:1;
+cellpadding string:0;
+border string:0;
+">
+  <tr>
+   <th tal:attributes="
+align string:center;
+colspan string:${total_milestone_issues};
+">Milestone Progress</th>
+  </tr>
+  <tr>
+   <tal:block tal:repeat="current_prog python:range(total_milestone_issues)">
+   <td tal:define="
+prog_bar_class python:(current_prog<resolved_milestone_issues) and 'green-prog' or 'red-prog';
+" tal:attributes="
+class string:${prog_bar_class};
+nowrap string:nowrap;
+height string:8;
+"></td>
+   </tal:block>
+  </tr>
+ </table>
+ </tal:block>
  <table class="list">
   <tr>
    <th tal:condition="request/show/priority" i18n:translate="">Priority</th>
