@@ -157,7 +157,7 @@ db.security.addPermissionToRole('Anonymous', 'Web Access')
 # Assign the appropriate permissions to the anonymous user's Anonymous
 # Role. Choices here are:
 # - Allow anonymous users to register
-db.security.addPermissionToRole('Anonymous', 'Create', 'user')
+db.security.addPermissionToRole('Anonymous', 'Register', 'user')
 
 # Allow anonymous users access to view issues (and the related, linked
 # information)
