@@ -27,7 +27,7 @@
 this_milestone python:[mfs.value for mfs in request.form.value if mfs.name=='milestone'][0];
 total_milestone_issues python:len(db.issue.filter(filterspec={'milestone.name': this_milestone}));
 resolved_milestone_issues python:len(db.issue.filter(filterspec={'milestone.name': this_milestone, 'status': '8'}));
-percent_done python:(resolved_milestone_issues*100)/total_milestone_issues;
+percent_done python:(total_milestone_issues and ((resolved_milestone_issues*100)/total_milestone_issues) or 0);
 percent_left python:100-percent_done;
 ">
  <style>
