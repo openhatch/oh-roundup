@@ -8,4 +8,4 @@ if git ls-files | grep -q ^db; then
 fi
 
 # Okay, it should be safe. Push.
-git push --quiet origin HEAD:master | grep -v 'Syncing Gitorious'
+git push --quiet origin HEAD:master 2>&1 | grep -v 'Syncing Gitorious'
