@@ -232,6 +232,11 @@ current_milestone string:0.11.02;
   </p>
  </td>
  <td>
+  <p class="ok-message" tal:condition="python:request.user.username != 'anonymous'">
+    Hello! We are currently working on setting up a central login system, so the wiki and bugtracker will both use your OpenHatch login details. This system ties everything together via usernames, so if your current Roundup username is not the same as your OpenHatch username then when the central login system is enabled a new Roundup account will be created automatically with a matching username, and you WILL NOT be able to access your old account and its requisite data (bugs you created etc).
+   <a href="#" tal:attributes="href string:user${request/user/id}"
+    i18n:translate="">Click here to change your username if needed.</a>
+  </p>
   <p tal:condition="options/error_message | nothing" class="error-message"
      tal:repeat="m options/error_message" tal:content="structure m" />
   <p tal:condition="options/ok_message | nothing" class="ok-message">
