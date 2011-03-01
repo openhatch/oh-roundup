@@ -50,7 +50,8 @@ user = Class(db, "user",
                 alternate_addresses=String(),
                 queries=Multilink('query'),
                 roles=String(),     # comma-separated string of Role names
-                timezone=String())
+                timezone=String(),
+                django_id=String())
 user.setkey("username")
 
 # FileClass automatically gets this property in addition to the Class ones:

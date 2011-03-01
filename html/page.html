@@ -156,24 +156,10 @@ current_milestone string:0.11.02;
       href="user?@template=item" i18n:translate="">Add User</a>
   </p>
 
-  <form method="POST" tal:condition="python:request.user.username=='anonymous'"
-        tal:attributes="action request/base">
-   <p class="userblock">
+   <p class="userblock" tal:condition="python:request.user.username=='anonymous'">
     <b i18n:translate="">Login</b><br>
-    <input size="10" name="__login_name"><br>
-    <input size="10" type="password" name="__login_password"><br>
-    <input type="hidden" name="@action" value="Login">
-    <input type="checkbox" name="remember" id="remember">
-    <label for="remember" i18n:translate="">Remember me?</label><br>
-    <input type="submit" value="Login" i18n:attributes="value"><br>
-    <input type="hidden" name="__came_from" tal:attributes="value string:${request/base}${request/env/PATH_INFO}">
-    <span tal:replace="structure request/indexargs_form" />
-    <a href="user?@template=register"
-       tal:condition="python:request.user.hasPermission('Register', 'user')"
-     i18n:translate="">Register</a><br>
-    <a href="user?@template=forgotten" i18n:translate="">Lost&nbsp;your&nbsp;login?</a><br>
+    <a tal:attributes="href string:https://openhatch.org/account/login/?next=/bugs/${request/env/PATH_INFO}">Click here to login.</a>
    </p>
-  </form>
 
   <p class="userblock" tal:condition="python:request.user.username != 'anonymous'">
    <b i18n:translate="">Hello, <span i18n:name="user"
@@ -232,7 +218,7 @@ current_milestone string:0.11.02;
   </p>
  </td>
  <td>
-  <p class="ok-message" tal:condition="python:request.user.username != 'anonymous'">
+  <p class="ok-message" tal:condition="nothing">
     Hello! We are currently working on setting up a central login system, so the wiki and bugtracker will both use your OpenHatch login details. This system ties everything together via usernames, so if your current Roundup username is not the same as your OpenHatch username then when the central login system is enabled a new Roundup account will be created automatically with a matching username, and you WILL NOT be able to access your old account and its requisite data (bugs you created etc).
    <a href="#" tal:attributes="href string:user${request/user/id}"
     i18n:translate="">Click here to change your username if needed.</a>
