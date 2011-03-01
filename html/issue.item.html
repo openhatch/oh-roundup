@@ -57,9 +57,11 @@
  <td>
   <span tal:replace="structure python:context.blockers.field(showid=1, size=20)" />
   <span tal:condition="context/is_edit_ok" tal:replace="structure python:db.issue.classhelp('id,title', property='blockers')" />
-  <span tal:condition="context/blockers" tal:repeat="blk context/blockers">
+  <span tal:condition="context/blockers">
    <br><span i18n:translate="">View:</span>
-     <a tal:attributes="href string:issue${blk/id}" tal:content="blk/id"></a>
+     <a tal:repeat="blk context/blockers"
+        tal:content="python:blk['id'] + ', '*(not repeat['blk'].end)"
+        tal:attributes="href string:issue${blk/id}"></a>
   </span>
  </td>
  <th i18n:translate="">Status</th>
