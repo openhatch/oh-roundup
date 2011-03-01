@@ -76,6 +76,7 @@ file = FileClass(db, "file",
 #   nosy = Multilink("user")
 #   superseder = Multilink("issue")
 issue = IssueClass(db, "issue",
+                blockers=Multilink("issue"),
                 assignedto=Link("user"),
                 keyword=Multilink("keyword"),
                 priority=Link("priority"),

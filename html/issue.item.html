@@ -48,11 +48,20 @@
 <tr>
  <th i18n:translate="">Milestone</th>
  <td tal:content="structure python:context.milestone.menu(sort_on='-name')">assignedto menu</td>
+ <th class="required" i18n:translate="">Priority</th>
+ <td tal:content="structure context/priority/menu">priority</td>
 </tr>
 
 <tr>
- <th class="required" i18n:translate="">Priority</th>
- <td tal:content="structure context/priority/menu">priority</td>
+ <th i18n:translate="">Waiting On</th>
+ <td>
+  <span tal:replace="structure python:context.blockers.field(showid=1, size=20)" />
+  <span tal:condition="context/is_edit_ok" tal:replace="structure python:db.issue.classhelp('id,title', property='blockers')" />
+  <span tal:condition="context/blockers" tal:repeat="blk context/blockers">
+   <br><span i18n:translate="">View:</span>
+     <a tal:attributes="href string:issue${blk/id}" tal:content="blk/id"></a>
+  </span>
+ </td>
  <th i18n:translate="">Status</th>
  <td tal:content="structure context/status/menu">status</td>
 </tr>
