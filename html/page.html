@@ -67,10 +67,7 @@ current_milestone string:6;
   <p class="classblock"
      tal:condition="python:request.user.hasPermission('View', 'issue')">
     <b i18n:translate="">This month</b><br>
-    <a href="#"
-       tal:attributes="href python:request.indexargs_url('milestone%s'%current_milestone, {
-      '@template': 'open'
-     })"
+    <a href="#" tal:attributes="href string:milestone${current_milestone}?@template=open"
        i18n:translate="">Milestone
         <span tal:replace="python:db.milestone.filter(filterspec={'id':current_milestone})[0].name">
         current milestone</span></a><br>
