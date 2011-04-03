@@ -26,7 +26,7 @@ columns string:id,activity,title,creator,status,milestone;
 columns_showall string:id,activity,title,creator,assignedto,status,milestone;
 columns_currentms string:id,activity,title,creator,assignedto,status;
 status_notresolved string:-1,1,2,3,4,5,6,7,9,10;
-current_milestone string:0.11.03;
+current_milestone string:6;
 "
 >
 
@@ -68,17 +68,12 @@ current_milestone string:0.11.03;
      tal:condition="python:request.user.hasPermission('View', 'issue')">
     <b i18n:translate="">This month</b><br>
     <a href="#"
-       tal:attributes="href python:request.indexargs_url('issue', {
-      '@sort': '-activity',
-      '@group': 'priority',
-      '@filter': 'status,milestone',
-      '@columns': columns_currentms,
-      '@search_text': '',
-      'status': status_notresolved,
-      'milestone': current_milestone,
-      '@dispname': i18n.gettext('Milestone ' + current_milestone),
+       tal:attributes="href python:request.indexargs_url('milestone%s'%current_milestone, {
+      '@template': 'open'
      })"
-       i18n:translate="">Milestone <span tal:replace=current_milestone>current milestone</span></a><br>
+       i18n:translate="">Milestone
+        <span tal:replace="python:db.milestone.filter(filterspec={'id':current_milestone})[0].name">
+        current milestone</span></a><br>
   </p>
 
   <form method="POST" tal:attributes="action request/base">
@@ -124,10 +119,10 @@ current_milestone string:0.11.03;
      tal:condition="python:ms_edit or ms_create">
    <b i18n:translate="">Milestones</b><br>
    <span tal:condition="python:request.user.hasPermission('Create', 'milestone')">
-    <a href="milestone?@template=item" i18n:translate="">Create New</a><br>
+    <a href="milestone?@template=edit" i18n:translate="">Create New</a><br>
    </span>
    <span tal:condition="ms_edit_link">
-    <a href="milestone?@template=item" i18n:translate="">Edit Existing</a><br>
+    <a href="milestone?@template=edit" i18n:translate="">Edit Existing</a><br>
    </span>
   </p>
 

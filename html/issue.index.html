@@ -22,61 +22,6 @@
  Please login with your username and password.</p>
 
 <tal:block tal:define="batch request/batch" tal:condition="context/is_view_ok">
- <tal:block tal:condition="python:'milestone' in request.filter">
- <tal:block tal:define="
-this_milestone python:[mfs.value for mfs in request.form.value if mfs.name=='milestone'][0];
-total_milestone_issues python:len(db.issue.filter(filterspec={'milestone.name': this_milestone}));
-resolved_milestone_issues python:len(db.issue.filter(filterspec={'milestone.name': this_milestone, 'status': '8'}));
-percent_done python:(total_milestone_issues and ((resolved_milestone_issues*100)/total_milestone_issues) or 0);
-percent_left python:100-percent_done;
-">
- <style>
-  dl.progress,
-  dl.progress *
-      { margin: 0; padding: 0; }
-
-  dl.progress {
-      margin-left: 5%;
-      margin-top: 5px; margin-bottom: 5px;
-      padding: 1px; border: 1px solid #ddd;
-      height: 20px; width: 90%; }
-
-  .progress dt
-      { width: 0; height: 0; overflow: hidden; }
-
-  .progress dd
-      { text-align: center; }
-
-  .progress .done,
-  .progress .left
-      { height: 100%; float: left; }
-
-  .progress .done
-      { background-color: #C4EE7E; }
-  .progress .left
-      { background-color: #7FC4FF; }
-
- </style>
- <style tal:condition="python:percent_done<10">
-  .progress .done
-      { text-indent: -150%; }
- </style>
- <style tal:condition="python:percent_left<10">
-  .progress .left
-      { text-indent: -150%; }
- </style>
- <style tal:content="string:.progress .done { width: ${percent_done}%; } .progress .left { width: ${percent_left}%; }">
- </style>
- <b class="proghead">Milestone Progress</b><br />
- <dl class="progress">
-  <dt>Completed:</dt>
-  <dd class="done" tal:content="string:${percent_done}% done"></dd>
-
-  <dt>Left:</dt>
-  <dd class="left" tal:content="string:${percent_left}% to go"></dd>
- </dl>
- </tal:block>
- </tal:block>
  <table class="list">
   <tr>
    <th tal:condition="request/show/priority" i18n:translate="">Priority</th>

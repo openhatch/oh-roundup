@@ -22,7 +22,8 @@
 <tal:block tal:define="
 display_cols python:['id','activity','title','status','creator','assignedto'];
 milestone_issues python:db.issue.filter(filterspec={
-                                            'milestone': context.id
+                                            'milestone': context.id,
+                                            'status': status_notresolved.split(',')
                                         },
                                         sort=[('-','activity')],
                                         group=[('+','priority')]);
