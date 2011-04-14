@@ -47,6 +47,33 @@ def nosyreaction(db, cl, nodeid, oldvalues):
         except roundupdb.MessageSendError, message:
             raise roundupdb.DetectorError, message
 
+def needreviewstatuscopy(db, cl, nodeid, oldvalues):
+    ''' Copy a message about issues with 'need-review' status to a team address.
+    '''
+    # Check that the status of the message is 'need-review'
+    status = cl.get(nodeid, 'status')
+    needreview_id = db.status.lookup('need-review')
+    if status != needreview_id:
+        return
+
+    # Check that the previous status of the message was not 'need-review'
+    if oldvalues and oldvalues.get('status', None) == needreview_id:
+        return
+
+    # Generate the appropriate note.
+    if oldvalues:
+        change_note = cl.generateChangeNote(nodeid, oldvalues)
+    else:
+        change_note = cl.generateCreateNote(nodeid)
+
+    # send a copy to the nosy list
+    for msgid in determineNewMessages(cl, nodeid, oldvalues):
+        try:
+            # note: last arg must be a list
+            cl.send_message(nodeid, msgid, change_note, ['devel@lists.openhatch.org'])
+        except roundupdb.MessageSendError, message:
+            raise roundupdb.DetectorError, message
+
 def determineNewMessages(cl, nodeid, oldvalues):
     ''' Figure a list of the messages that are being added to the given
         node in this transaction.
@@ -154,6 +181,8 @@ def updatenosy(db, cl, nodeid, newvalues):
 def init(db):
     db.issue.react('create', nosyreaction)
     db.issue.react('set', nosyreaction)
+    db.issue.react('create', needreviewstatuscopy)
+    db.issue.react('set', needreviewstatuscopy)
     db.issue.audit('create', defaultnosy)
     db.issue.audit('create', updatenosy)
     db.issue.audit('set', updatenosy)
