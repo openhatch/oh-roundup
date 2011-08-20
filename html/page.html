@@ -27,6 +27,7 @@ columns_showall string:id,activity,title,creator,assignedto,status,milestone;
 columns_currentms string:id,activity,title,creator,assignedto,status;
 status_notresolved string:-1,1,2,3,4,5,6,7,9,10;
 current_milestone string:10;
+keyword_bitesize string:1;
 "
 >
 
@@ -103,6 +104,18 @@ current_milestone string:10;
       '@dispname': i18n.gettext('Show All'),
      })"
        i18n:translate="">Show All</a><br>
+    <a href="#"
+       tal:attributes="href python:request.indexargs_url('issue', {                                                                                                                                              
+      '@sort': '-activity',                                                                                                                                                                                      
+      '@group': 'priority',                                                                                                                                                                                      
+      '@filter': 'status,keyword',                                                                                                                                                                               
+      '@columns': columns_showall,                                                                                                                                                                               
+      '@search_text': '',                                                                                                                                                                                        
+      'status': status_notresolved,                                                                                                                                                                              
+      'keyword': keyword_bitesize,                                                                                                                                                                               
+      '@dispname': i18n.gettext('Show Bitesized'),                                                                                                                                                               
+     })"
+       i18n:translate="">Show Bitesized</a><br>
     <a href="issue?@template=search" i18n:translate="">Search</a><br>
     <input type="submit" class="form-small" value="Show issue:"
      i18n:attributes="value"><input class="form-small" size="4"
