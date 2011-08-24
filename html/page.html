@@ -67,11 +67,12 @@ keyword_bitesize string:1;
 
   <p class="classblock"
      tal:condition="python:request.user.hasPermission('View', 'issue')">
-    <b i18n:translate="">This month</b><br>
+    <b i18n:translate="">This month: <span tal:replace="python:db.milestone.filter(filterspec={'id':current_milestone})[0].name">
+        current milestone</span></b><br>
+    <a href="#" tal:attributes="href python:'/wiki/'+str(db.milestone.filter(filterspec={'id':current_milestone})[0].name)"
+       i18n:translate="">Goals (in wiki)</a><br>
     <a href="#" tal:attributes="href string:milestone${current_milestone}?@template=open"
-       i18n:translate="">Milestone
-        <span tal:replace="python:db.milestone.filter(filterspec={'id':current_milestone})[0].name">
-        current milestone</span></a><br>
+       i18n:translate="">Bug list</a>
   </p>
 
   <form method="POST" tal:attributes="action request/base">
